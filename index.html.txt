@@ -11,13 +11,14 @@
     let model, webcam;
 
     async function init() {
-      model = await tmImage.load(URL + "model.json", URL + "metadata.json");
+      model = await tmImage.load(https://pallepoguajay044-star.github.io/FaceAttedance/ + "model.json", https://pallepoguajay044-star.github.io/FaceAttedance/ + "metadata.json");
       webcam = new tmImage.Webcam(224, 224, true);
       await webcam.setup();
       await webcam.play();
       window.requestAnimationFrame(loop);
       document.getElementById("webcam").appendChild(webcam.canvas);
-    }
+      await webcam.setup({ facingMode: "user" });
+}
 
     async function loop() {
       webcam.update();
@@ -30,4 +31,5 @@
     init();
   </script>
 </body>
+
 </html>
