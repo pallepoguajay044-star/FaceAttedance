@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Face Attendance</title>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+</head>
+<body>
+  <video id="webcam" autoplay playsinline width="224" height="224"></video>
+  <script type="text/javascript">
+    const URL = "./";  // model files are in the same folder
+    let model, webcam;
+
+    async function init() {
+      model = await tmImage.load(URL + "model.json", URL + "metadata.json");
+      webcam = new tmImage.Webcam(224, 224, true);
+      await webcam.setup();
+      await webcam.play();
+      window.requestAnimationFrame(loop);
+      document.getElementById("webcam").appendChild(webcam.canvas);
+    }
+
+    async function loop() {
+      webcam.update();
+      const prediction = await model.predict(webcam.canvas);
+      const highest = prediction.reduce((a, b) => a.probability > b.probability ? a : b);
+      window.AppInventor.setWebViewString(highest.className);
+      window.requestAnimationFrame(loop);
+    }
+
+    init();
+  </script>
+</body>
+</html>
